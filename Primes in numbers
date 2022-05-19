@@ -9,21 +9,20 @@ Example: n = 86240 should return "(2**5)(5)(7**2)(11)"
 
 
 function primeFactors(n){
-    //your code here
-  for (let i = 1; i < 18; i++) {
-    console.log(`For ${i}, the prime is ${getNextPrime(i)}`)
-  }
-  
+    //your code here 
   let sol = {'2':0}
   let prime = 2
   while (n > 1) {
     if (n % prime == 0) {
+      if (!(Object.keys(sol).includes(prime.toString()))) {
+        sol[prime] = 0
+      }
+      
       sol[prime]++
       n = n / prime
     }
     else {
       prime = getNextPrime(prime)
-      sol[prime] = 0
     }
   }
   console.log(sol)
@@ -51,7 +50,6 @@ function buildSolution(sol) {
       str += `(${key})`
     }
     else {}
-    console.log(`The key is ${key} and the value is ${sol[key]}`)
   }
   return str
 }
