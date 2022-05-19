@@ -27,6 +27,7 @@ function primeFactors(n){
     }
   }
   console.log(sol)
+  return buildSolution(sol)
 }
 
 function getNextPrime(n) {
@@ -38,6 +39,21 @@ function getNextPrime(n) {
     }
   }
   return testNum
+}
+
+function buildSolution(sol) {
+  let str = ""
+  for (const key in sol) {
+    if (sol[key] > 1) {
+      str += `(${key}**${sol[key]})`
+    }
+    else if (sol[key] == 1) {
+      str += `(${key})`
+    }
+    else {}
+    console.log(`The key is ${key} and the value is ${sol[key]}`)
+  }
+  return str
 }
 
 
