@@ -20,7 +20,27 @@ runLengthEncoding("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbb")
 
 
 var runLengthEncoding = function(str){
-  return [] // << fix this
+  let soln = []
+  str = str.split('')
+  for (let i = 0; i < str.length; i++) {
+    if (soln.length == 0) {
+      console.log(`soln was empty; added: ${[1, str[i]]}`)
+      soln.push([1, str[i]])
+    }
+    else {
+      console.log(`Found character ${str[i]}`)
+      if (soln[soln.length - 1][1] == str[i]) {
+        console.log(`\t\t MATCHES previous`)
+        soln[soln.length - 1][0]++
+      }
+      else {
+        console.log(`\t\t DOES NOT MATCH previous`)
+        soln.push([1, str[i]])
+      }
+    }
+  }
+  console.log(soln)
+  return soln // << fix this
 }
 
 
