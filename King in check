@@ -1,0 +1,324 @@
+You have to write a function that takes for input a 8x8 chessboard in the form of a bi-dimensional array of chars (or strings of length 1, depending on the language) and returns a boolean indicating whether the king is in check.
+
+The array will include 64 squares which can contain the following characters :
+
+    '♔' for the black King;
+    '♛' for a white Queen;
+    '♝' for a white Bishop;
+    '♞' for a white Knight;
+    '♜' for a white Rook;
+    '♟' for a white Pawn;
+    ' ' (a space) if there is no piece on that square.
+
+Note : these are actually inverted-color chess Unicode characters because the codewars dark theme makes the white appear black and vice versa. Use the characters shown above.
+
+There will always be exactly one king, which is the black king, whereas all the other pieces are white.
+The board is oriented from Black's perspective.
+Remember that pawns can only move and take forward.
+Also be careful with the pieces' lines of sight ;-) .
+
+The input will always be valid, no need to validate it. To help you visualize the position, tests will print a chessboard to show you the problematic cases. Looking like this :
+
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   | ♜ |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   | ♔ |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+
+
+
+
+function kingIsInCheck (chessboard) {
+  let result = false
+  let kingPosition = findKing(chessboard)
+  
+  if (pawnsMoves(kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♟')) {
+    result = true
+  }
+  if (knightsMoves(kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♞')) {
+    result = true
+  }
+  if (lateralMoves(chessboard, kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♜')) {
+    result = true
+  }
+  if (diagonalMoves(chessboard, kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♝')) {
+    result = true
+  }
+  if (lateralMoves(chessboard, kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♛')) {
+    result = true
+  }
+  if (diagonalMoves(chessboard, kingPosition).map(x => chessboard[x[0]][x[1]]).includes('♛')) {
+    result = true
+  }
+  return result ; // do your magic :)
+}
+
+function findKing(chessboard) {
+  for (let rank = 0; rank < 8; rank++) {
+    for (let file = 0; file < 8; file++) {
+      if (chessboard[rank][file] == '♔') {
+        return [rank, file]
+      }
+    }
+  }
+}
+
+function knightsMoves([rank, file]) {
+  let moves = [
+    [rank + 2, file - 1], [rank + 2, file + 1],
+    [rank - 2, file - 1], [rank - 2, file + 1],
+    [rank - 1, file - 2], [rank + 1, file - 2],
+    [rank - 1, file + 2], [rank + 1, file + 2]
+  ]
+  return moves.filter(x => validSpot(x))
+}
+
+function pawnsMoves([rank, file]) {
+  let moves = [
+    [rank - 1, file + 1], [rank - 1, file - 1]
+  ]
+  return moves.filter(x => validSpot(x))
+}
+
+function lateralMoves(chessboard, [rank, file]) {
+  let moves = [[rank, file]]
+  let evalRank = rank
+  let evalFile = file
+  
+  evalRank = rank
+  evalFile = file
+  while (evalRank != -1) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalRank--
+  }
+
+
+  evalRank = rank
+  evalFile = file
+  while (evalRank != 8) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalRank++
+  }
+
+  evalRank = rank
+  evalFile = file
+  while (evalFile != -1) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalFile--
+  }
+  
+  evalRank = rank
+  evalFile = file
+  while (evalRank != 8) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalFile++
+  }
+  return moves
+}
+
+function diagonalMoves(chessboard, [rank, file]) {
+  let moves = []
+  let evalRank = rank
+  let evalFile = file
+  
+  evalRank = rank
+  evalFile = file
+  while (evalRank != -1 && evalFile != -1) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalRank--
+    evalFile--
+  }
+  
+  evalRank = rank
+  evalFile = file
+  while (evalRank != 8 && evalFile != 8) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalRank++
+    evalFile++
+  }
+  
+  evalRank = rank
+  evalFile = file
+  while (evalFile != -1 && evalRank != 8) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalFile--
+    evalRank++
+  }
+  
+  evalRank = rank
+  evalFile = file
+  while (evalFile != 8 && evalRank != -1) {
+    moves.push([evalRank, evalFile])
+    if (chessboard[evalRank][evalFile] != ' ' && chessboard[evalRank][evalFile] !='♔') {
+      break;
+    }
+    evalFile++
+    evalRank--
+  }
+//  console.log(`Diagonal moves are: \n ${moves}`)
+  return moves
+}
+
+function validSpot([rank, file]) {
+  return !(rank < 0 || rank > 7 || file < 0 || file > 7)
+}
+
+
+
+
+describe("Fixed tests", function () {
+
+	it("should work with a check by pawn", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', '♟', ' ', ' ', ' ', ' '],
+		[' ', ' ', '♔', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, true);
+	});
+
+	it("should work with a check by bishop", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', '♝'],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		['♔', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, true);
+	});
+
+	it("should work with a check by rook", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', '♔', ' ', ' ', '♜', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, true);
+	});
+
+	it("should work with a check by knight", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', '♔', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		['♞', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, true);
+	});
+
+	it("should work with a check by queen", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', '♛', ' ', '♔', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, true);
+	});
+
+	it("should work with a king alone", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', '♔', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, false);
+	});
+
+	it("should work with no check", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		['♛', ' ', ' ', '♞', ' ', ' ', ' ', '♛'],
+		[' ', ' ', ' ', '♔', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, false);
+	});
+
+	it("should work with a piece blocking another's line of sight", function () {
+
+		const chessboard = [
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		['♜', ' ', '♝', '♔', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']];
+
+		doSampleTest(chessboard, false);
+	});
+});
+
