@@ -9,7 +9,12 @@ For example (Input --> Output):
 
 
 function persistence(num) {
-   //code me
+  if (num < 10) {
+    return 0
+  }
+  else {
+    return 1 + persistence(num.toString().split('').reduce((mult, x) => mult * x, 1))
+  }
 }
 
 
