@@ -31,29 +31,24 @@ Fundamentals
 
 var countDeafRats = function(town) {
   let halves = town.split("P")
-  let rats = 0
-  
-  let count = 0
-  for (const i in halves[0].split('')) {
-    if (halves[0][i] == "~") {count++}
-    if (halves[0][i] == "O") {
-      if (count == 0) {
-        rats++
-      }
-      count--
-    }
-  }
-  for (const i in halves[1].split('')) {
-    if (halves[1][i] == "O") {count++}
-    if (halves[1][i] == "~") {
-      if (count == 0) {
-        rats++
-      }
-      count--
-    }
-  }
-  return rats;
+  return countRats(halves[0].split('')) + countRats(halves[1].split('').reverse())
 }
+
+function countRats(arr) {
+  let count = 0
+  let rats = 0
+  for (const i in arr) {
+    if (arr[i] == "~") {count++}
+    if (arr[i] == "O") {
+      if (count == 0) {
+        rats++
+      }
+      count--
+    }
+  }
+  return rats
+}
+
 
 
 
