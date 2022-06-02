@@ -30,9 +30,31 @@ Fundamentals
 
 
 var countDeafRats = function(town) {
-  // Your code here
-  return 0;
+  let halves = town.split("P")
+  let rats = 0
+  
+  let count = 0
+  for (const i in halves[0].split('')) {
+    if (halves[0][i] == "~") {count++}
+    if (halves[0][i] == "O") {
+      if (count == 0) {
+        rats++
+      }
+      count--
+    }
+  }
+  for (const i in halves[1].split('')) {
+    if (halves[1][i] == "O") {count++}
+    if (halves[1][i] == "~") {
+      if (count == 0) {
+        rats++
+      }
+      count--
+    }
+  }
+  return rats;
 }
+
 
 
 describe("Example Tests", function() {
