@@ -42,7 +42,16 @@ Return "Battle Result: Good triumphs over Evil" if good wins, "Battle Result: Ev
 
 
 function goodVsEvil(good, evil){
-
+  let goodWorth = [1, 2, 3, 3, 4, 10],
+      evilWorth = [1, 2, 2, 2, 3, 5, 10],
+      ans = sumForces(good, goodWorth) - sumForces(evil, evilWorth)
+  return ans > 0 ? "Battle Result: Good triumphs over Evil" :
+         ans == 0 ? "Battle Result: No victor on this battle field" :
+         ans < 0 ? "Battle Result: Evil eradicates all trace of Good" : 0
+}
+    
+function sumForces(str, worth) {
+  return str.split(' ').reduce((sum, x, i) => sum + (+x*worth[i]), 0)
 }
 
 
