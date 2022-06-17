@@ -13,16 +13,12 @@ For this kata, the vowels are 'a', 'e', 'i', 'o', 'u', in that order. y is not c
 
 Good luck!
 
-
 function getTheVowels(word) {
   const VOWELS = ['a', 'e', 'i', 'o', 'u']
   
-  return word.split('').reduce((count, x) => {
-    if (x == VOWELS[count % VOWELS.length]) {
-      return count + 1
-    }
-    return count
-  }, 0)
+  return word.split('').reduce((count, x) => 
+    x == VOWELS[count % VOWELS.length] ? count + 1 : count
+  , 0)
 }
 
 const chai = require("chai");
