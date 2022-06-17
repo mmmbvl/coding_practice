@@ -17,18 +17,12 @@ Good luck!
 function getTheVowels(word) {
   const VOWELS = ['a', 'e', 'i', 'o', 'u']
   
-  word = word.split('')
-  let count = 0
-  for (let i = 0; i < word.length; i++) {
-    let testVowel = VOWELS[count % VOWELS.length]
-    if (VOWELS.includes(word[i])) {
-      if (word[i] == testVowel) {
-        count++
-      }
+  return word.split('').reduce((count, x) => {
+    if (x == VOWELS[count % VOWELS.length]) {
+      return count + 1
     }
-  }
-  return count  
-  return 0;
+    return count
+  }, 0)
 }
 
 const chai = require("chai");
