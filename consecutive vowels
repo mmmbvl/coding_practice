@@ -15,6 +15,19 @@ Good luck!
 
 
 function getTheVowels(word) {
+  const VOWELS = ['a', 'e', 'i', 'o', 'u']
+  
+  word = word.split('')
+  let count = 0
+  for (let i = 0; i < word.length; i++) {
+    let testVowel = VOWELS[count % VOWELS.length]
+    if (VOWELS.includes(word[i])) {
+      if (word[i] == testVowel) {
+        count++
+      }
+    }
+  }
+  return count  
   return 0;
 }
 
