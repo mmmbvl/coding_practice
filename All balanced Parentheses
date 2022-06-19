@@ -8,74 +8,21 @@ balancedParens(3) => ["()()()","(())()","()(())","(()())","((()))"]
 
 
 function balancedParens(n) {
-  let ans = new Set
-  if (n == 0) {
-    ans.add("")
-    return new Array(...ans)
-  }
-  let prev = balancedParens(n - 1)
-  prev.forEach(x => {
-    let isolIdx = findIsolates(x)
-    let isol = isolIdx.map(isolate => {
-      let idx = isolate['counterIdx'], len = isolate['counterLength']
-      return x.slice(idx, idx + len)
-    })
-//     console.log(`The isolates are: ${isol}`)
-    
-    isol.forEach((y,i) => {
-      let cand = new Array(...isol)
-      let p = [`()${cand[i]}`,`(${cand[i]})`,`${cand[i]}()`]
-//       console.log(`The current isolate is: POS ${i} and VALUE ${y}`)
-//       console.log(`Generated tmp structure cand: ${cand}`)
-//       console.log(`Replacing: ${cand[i]}`)
-//       console.log(`Generated tmp structure p: ${p}\n...\n...\n...`)
-      p.forEach(v => {
-//         console.log(`Perform replacement on ${cand[i]}`)
-        cand[i] = v
-//         console.log(`... ... ...Changed to ${cand[i]}`)
-//         console.log(`Resulting in new candidate solution: ${cand.join()}\n------------------`)
-        ans.add(cand.join(''))
-      })
-    })
-    
-    ans.add(`${x}()`)
-    ans.add(`()${x}`)
-    ans.add(`(${x})`)
-    
-    
-    
-//     let arr = x.split('')
-//     arr.push("")
-//     arr.forEach((y, i) => {
-//       let tmp = x.split('')
-//       tmp.splice(i, 0, "()")
-//       ans.add(tmp.join(''))
-//     })
-  })
-  return new Array(...ans);
+  let ans = [], str = ''
+  findSolns(ans, str, n, 0, 0)
+  return ans
 }
 
-
-function findIsolates(str) {
-  let results = []
-  let counter = 0, counterIdx = 0, counterLength = 0
-  for (let i = 0; i < str.length; i++) {
-    counterLength++
-    if (str[i] == '(') {
-      counter++
-      if (counter == 1) {
-        counterIdx = i
-        counterLength = 1
-      }
-    }
-    if (str[i] == ')') {
-      counter--
-      if (counter == 0) {
-        results.push({counterIdx, counterLength})
-      }
-    }
+function findSolns(ans, str, n, open, close) {
+  if (close == n) {
+    ans.push(str)
   }
-  return results
+  if (open < n) {
+    findSolns(ans, str + '(', n, open + 1, close)
+  }
+  if (open > close) {
+    findSolns(ans, str + ')', n, open, close + 1)
+  }
 }
 
 
