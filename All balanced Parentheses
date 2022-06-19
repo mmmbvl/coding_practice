@@ -1,0 +1,72 @@
+rite a function which makes a list of strings representing all of the ways you can balance n pairs of parentheses
+Examples
+
+balancedParens(0) => [""]
+balancedParens(1) => ["()"]
+balancedParens(2) => ["()()","(())"]
+balancedParens(3) => ["()()()","(())()","()(())","(()())","((()))"]
+
+
+function balancedParens(n) {
+  let ans = new Set
+  if (n == 0) {
+    ans.add("")
+    return new Array(...ans)
+  }
+  let prev = balancedParens(n - 1)
+  prev.forEach(x => {
+    let arr = x.split('')
+    arr.push("")
+    arr.forEach((y, i) => {
+      let tmp = x.split('')
+      tmp.splice(i, 0, "()")
+      ans.add(tmp.join(''))
+    })
+  })
+  return new Array(...ans);
+}
+
+
+describe("All Balanced Parentheses",()=>{
+  it("Example Tests",()=>{
+    Test.assertDeepEquals( balancedParens(0).sort(), [""] );
+    Test.assertDeepEquals( balancedParens(1).sort(), ["()"] );
+    Test.assertDeepEquals( balancedParens(2).sort(), ["(())","()()"] );
+    Test.assertDeepEquals( balancedParens(3).sort(), ["((()))","(()())","(())()","()(())","()()()"] );
+    Test.assertDeepEquals( balancedParens(4).sort(), ["(((())))","((()()))","((())())","((()))()","(()(()))","(()()())","(()())()","(())(())","(())()()","()((()))","()(()())","()(())()","()()(())","()()()()"] );
+  });
+});
+
+
+Time: 5412ms Passed: 12Failed: 1Errors: 1Exit Code: 1
+Test Results:
+All Balanced Parentheses
+Fixed Tests
+Random Tests
+n = 8
+n = 9
+n = 11
+n = 12
+
+RangeError: Maximum call stack size exceeded
+    at balancedParens
+    at it
+    at begin
+    at it
+    at describe
+    at /runner/frameworks/javascript/cw-2.js:152:11
+    at Promise._execute
+    at Promise._resolveFromExecutor
+    at new Promise
+    at describe
+    at describe
+    at /runner/frameworks/javascript/cw-2.js:152:11
+    at Promise._execute
+    at Promise._resolveFromExecutor
+    at new Promise
+    at describe
+
+Completed in 3011ms
+n = 6
+Completed in 4315ms
+Completed in 4768ms
