@@ -15,15 +15,79 @@ function balancedParens(n) {
   }
   let prev = balancedParens(n - 1)
   prev.forEach(x => {
-    let arr = x.split('')
-    arr.push("")
-    arr.forEach((y, i) => {
-      let tmp = x.split('')
-      tmp.splice(i, 0, "()")
-      ans.add(tmp.join(''))
+    ans.add(`${x}()`)
+    ans.add(`()${x}`)
+    ans.add(`(${x})`)
+//    ans.add(`(${x})`)
+ //   console.log(`The eval is ${x} and splitting it gets us ${y}`)
+//    console.log(`prev is ${prev}`)
+    let isol = findIsolates(x)
+//    console.log(`Isolates are:`)
+ //   isol.forEach(y => console.log(y['counterIdx'], y['counterLength']))
+    let arr = isol.map(isolate => {
+      let idx = isolate['counterIdx'], len = isolate['counterLength']
+      return x.slice(idx, idx + len)
     })
+    
+//    console.log(`The split string by isolates is: ${arr}`)
+    let kryzer = ''
+ //   console.log(`arr2 starts off as ${arr2}`)
+    for (let i = 0; i < arr.length; i++) {
+      kryzer = ''
+      for (let j = 0; j < arr.length; j++) {
+        if (i == j) {
+          kryzer += `(${arr[j]})`
+        }
+        else {
+          kryzer += arr[j]
+        }
+      }
+      ans.add(`${kryzer}`)
+  //    console.log(`arr2 is ${arr2}`)
+    }
+    
+//     for (let i = 0; i < x.length - 1; i++) {
+// //      console.log(x.slice(i, i + 2))
+//       if (x.slice(i, i + 2) == '()') {
+//         let tmp = x.split('')
+//  //       console.log(`tmp before: ${tmp}`)
+//         tmp.splice(i, 2, '')
+//         tmp.splice(i, 0, '(())')
+// //        console.log(`tmp after: ${tmp} \n           ${tmp.join('')}`)
+//         ans.add(`${tmp.join('')}`)
+//       }
+//     }
+//     let arr = x.split('')
+//     arr.push("")
+//     arr.forEach((y, i) => {
+//       let tmp = x.split('')
+//       tmp.splice(i, 0, "()")
+//       ans.add(tmp.join(''))
+//     })
   })
   return new Array(...ans);
+}
+
+function findIsolates(str) {
+  let results = []
+  let counter = 0, counterIdx = 0, counterLength = 0
+  for (let i = 0; i < str.length; i++) {
+    counterLength++
+    if (str[i] == '(') {
+      counter++
+      if (counter == 1) {
+        counterIdx = i
+        counterLength = 1
+      }
+    }
+    if (str[i] == ')') {
+      counter--
+      if (counter == 0) {
+        results.push({counterIdx, counterLength})
+      }
+    }
+  }
+  return results
 }
 
 
@@ -36,37 +100,3 @@ describe("All Balanced Parentheses",()=>{
     Test.assertDeepEquals( balancedParens(4).sort(), ["(((())))","((()()))","((())())","((()))()","(()(()))","(()()())","(()())()","(())(())","(())()()","()((()))","()(()())","()(())()","()()(())","()()()()"] );
   });
 });
-
-
-Time: 5412ms Passed: 12Failed: 1Errors: 1Exit Code: 1
-Test Results:
-All Balanced Parentheses
-Fixed Tests
-Random Tests
-n = 8
-n = 9
-n = 11
-n = 12
-
-RangeError: Maximum call stack size exceeded
-    at balancedParens
-    at it
-    at begin
-    at it
-    at describe
-    at /runner/frameworks/javascript/cw-2.js:152:11
-    at Promise._execute
-    at Promise._resolveFromExecutor
-    at new Promise
-    at describe
-    at describe
-    at /runner/frameworks/javascript/cw-2.js:152:11
-    at Promise._execute
-    at Promise._resolveFromExecutor
-    at new Promise
-    at describe
-
-Completed in 3011ms
-n = 6
-Completed in 4315ms
-Completed in 4768ms
