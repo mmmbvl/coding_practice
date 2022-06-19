@@ -15,48 +15,35 @@ function balancedParens(n) {
   }
   let prev = balancedParens(n - 1)
   prev.forEach(x => {
-    ans.add(`${x}()`)
-    ans.add(`()${x}`)
-    ans.add(`(${x})`)
-//    ans.add(`(${x})`)
- //   console.log(`The eval is ${x} and splitting it gets us ${y}`)
-//    console.log(`prev is ${prev}`)
-    let isol = findIsolates(x)
-//    console.log(`Isolates are:`)
- //   isol.forEach(y => console.log(y['counterIdx'], y['counterLength']))
-    let arr = isol.map(isolate => {
+    let isolIdx = findIsolates(x)
+    let isol = isolIdx.map(isolate => {
       let idx = isolate['counterIdx'], len = isolate['counterLength']
       return x.slice(idx, idx + len)
     })
+//     console.log(`The isolates are: ${isol}`)
     
-//    console.log(`The split string by isolates is: ${arr}`)
-    let kryzer = ''
- //   console.log(`arr2 starts off as ${arr2}`)
-    for (let i = 0; i < arr.length; i++) {
-      kryzer = ''
-      for (let j = 0; j < arr.length; j++) {
-        if (i == j) {
-          kryzer += `(${arr[j]})`
-        }
-        else {
-          kryzer += arr[j]
-        }
-      }
-      ans.add(`${kryzer}`)
-  //    console.log(`arr2 is ${arr2}`)
-    }
+    isol.forEach((y,i) => {
+      let cand = new Array(...isol)
+      let p = [`()${cand[i]}`,`(${cand[i]})`,`${cand[i]}()`]
+//       console.log(`The current isolate is: POS ${i} and VALUE ${y}`)
+//       console.log(`Generated tmp structure cand: ${cand}`)
+//       console.log(`Replacing: ${cand[i]}`)
+//       console.log(`Generated tmp structure p: ${p}\n...\n...\n...`)
+      p.forEach(v => {
+//         console.log(`Perform replacement on ${cand[i]}`)
+        cand[i] = v
+//         console.log(`... ... ...Changed to ${cand[i]}`)
+//         console.log(`Resulting in new candidate solution: ${cand.join()}\n------------------`)
+        ans.add(cand.join(''))
+      })
+    })
     
-//     for (let i = 0; i < x.length - 1; i++) {
-// //      console.log(x.slice(i, i + 2))
-//       if (x.slice(i, i + 2) == '()') {
-//         let tmp = x.split('')
-//  //       console.log(`tmp before: ${tmp}`)
-//         tmp.splice(i, 2, '')
-//         tmp.splice(i, 0, '(())')
-// //        console.log(`tmp after: ${tmp} \n           ${tmp.join('')}`)
-//         ans.add(`${tmp.join('')}`)
-//       }
-//     }
+    ans.add(`${x}()`)
+    ans.add(`()${x}`)
+    ans.add(`(${x})`)
+    
+    
+    
 //     let arr = x.split('')
 //     arr.push("")
 //     arr.forEach((y, i) => {
@@ -67,6 +54,7 @@ function balancedParens(n) {
   })
   return new Array(...ans);
 }
+
 
 function findIsolates(str) {
   let results = []
