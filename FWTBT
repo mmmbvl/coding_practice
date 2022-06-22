@@ -19,19 +19,13 @@ Write a function bell that will receive a positive integer and return an array. 
 
 function bell(n) {
   let ans = Array(n - 1).fill(0)
-  let bn = n
   let i = 0
   if (n == 1) {
     return [1]
   }
-  while (bn > 0) {
-    if (i == 0) {
-      ans[i] = n
-    }
-    else {
-      bn -= 2
-      ans[i] = ans[i - 1] + bn
-    }
+  while (i < (n/2)) {
+    i == 0 ?  ans[i] = n :
+              ans[i] = ans[i - 1] + n - (2 * i)
     ans[n - i - 1] = ans[i]
     i++
   }
