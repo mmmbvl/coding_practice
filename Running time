@@ -19,11 +19,8 @@ Algorithms
 
 
 function runningPace(distance, time){
-  let t = time.split(':')
-  console.log(`Split the time into ${t}`)
-  let sec = +t[1] + (+t[0] * 60)
-  console.log(`Total time is ${sec}`)
-  t[0] = sec / distance
+  let t = time.split(':') 
+  t[0] = (+t[1] + (+t[0] * 60)) / distance
   t[1] = Math.floor(t[0] % 60)
   t[1] = t[1] < 10 ? "0" + t[1] : t[1]
   t[0] = Math.floor(t[0] / 60)
