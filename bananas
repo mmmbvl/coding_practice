@@ -1,0 +1,131 @@
+
+[source: imgur.com] > "What is your name" said Tim.
+"My name" said the mouse "Is Dinglemouse".
+
+> "What were you before the witch turned you into a mouse" said Rose. 
+"I was a banana" said Dingle the mouse, "So be careful. If you see her, run away!".
+
+- Badjelly the Witch (12:32), Spike Milligan
+Kata Task
+
+Given a string of letters a, b, n how many different ways can you make the word "banana" by crossing out various letters and then reading left-to-right?
+
+(Use - to indicate a crossed-out letter)
+Example
+
+Input
+
+bbananana
+
+Output
+
+b-anana--
+b-anan--a
+b-ana--na
+b-an--ana
+b-a--nana
+b---anana
+-banana--
+-banan--a
+-bana--na
+-ban--ana
+-ba--nana
+-b--anana
+
+Notes
+
+    You must return all possible bananas, but the order does not matter
+    The example output above is formatted for readability. Please refer to the example tests for expected format of your result.
+
+:-)
+
+
+Strings
+Algorithms
+
+
+var bananas = function(s) {
+  let results = [], base = "", str = s, nd = str.length - 6
+  collectBananas(results, base, str, nd)
+  // Your code here!
+  return results
+}
+
+function isBanana(str) {
+//   console.log(`str is ${str}`)
+//   console.log(`Evaluation of ${str.split("-").join("")}`)
+  return (str.split("-").join("") == "banana")
+}
+
+function collectBananas(results, base, str, nd) {
+//  console.log(`New collect attempt: base is ${base}, str is ${str}, nd is ${nd} \n together is ${base + str}`)
+  if (isBanana(base + str)) {
+    results.push(base + str)
+//     console.log(`Success`)
+  }
+  if (nd > 0) {
+    collectBananas(results, base + "-", str.slice(1), nd - 1)
+    if (str != "") {
+        base += str.slice(0,1)
+        str = str.slice(1)
+        collectBananas(results, base, str, nd)
+      }
+  }
+}
+
+describe("ExampleTests", function(){
+
+  // common test code
+  var doTest = function(input, expected, actual) {
+    console.log(`INPUT: ${input}`);
+    console.log(`EXPECTED: ${expected}`);
+    Test.assertEquals(actual.length, expected.length, "wrong number of bananas!");
+    for (e of expected) {
+      if (!actual.includes(e)) {
+        console.log(`ACTUAL: ${actual}`);
+        Test.fail("banana mismatch!");
+      }
+    } // for
+  }
+  
+  it("ex0", function(){
+      var input = "banann";
+      var expected = [];
+      var actual = bananas(input);
+      doTest(input, expected, actual);
+  });
+  
+  it("ex1", function(){
+      var input = "banana";
+      var expected = ["banana"];
+      var actual = bananas(input);
+      doTest(input, expected, actual);
+  });
+
+  it("ex2", function(){
+      var input = "bbananana";
+      var expected = [
+        "b-an--ana", "-banana--", "-b--anana", "b-a--nana", "-banan--a", 
+        "b-ana--na", "b---anana", "-bana--na", "-ba--nana", "b-anan--a", 
+        "-ban--ana", "b-anana--"];
+      var actual = bananas(input);
+      doTest(input, expected, actual);
+  });
+
+  it("ex3", function(){
+      var input = "bananaaa";
+      var expected = ["banan-a-", "banana--", "banan--a"];
+      var actual = bananas(input);
+      doTest(input, expected, actual);
+  });
+
+  it("ex4", function(){
+      var input = "bananana";
+      var expected = [
+        "ban--ana", "ba--nana", "bana--na", "b--anana", "banana--", 
+        "banan--a"];
+      var actual = bananas(input);
+      doTest(input, expected, actual);
+  });
+
+});
