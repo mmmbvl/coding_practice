@@ -48,6 +48,7 @@ var bananas = function(s) {
   let results = [], base = "", str = s, nd = str.length - 6
   collectBananas(results, base, str, nd)
   // Your code here!
+  console.log(`Results are ${results}`)
   return results
 }
 
@@ -59,17 +60,16 @@ function isBanana(str) {
 
 function collectBananas(results, base, str, nd) {
 //  console.log(`New collect attempt: base is ${base}, str is ${str}, nd is ${nd} \n together is ${base + str}`)
+//   console.log(`New collect attempt: together is ${base + str}`)
   if (isBanana(base + str)) {
     results.push(base + str)
 //     console.log(`Success`)
   }
-  if (nd > 0) {
+  if (nd > 0 && str.length > 0) {
     collectBananas(results, base + "-", str.slice(1), nd - 1)
-    if (str != "") {
-        base += str.slice(0,1)
-        str = str.slice(1)
-        collectBananas(results, base, str, nd)
-      }
+    base += str.slice(0,1)
+    str = str.slice(1)
+    collectBananas(results, base, str, nd)
   }
 }
 
