@@ -45,25 +45,18 @@ Algorithms
 
 
 var bananas = function(s) {
-  let results = [], base = "", str = s, nd = str.length - 6
-  collectBananas(results, base, str, nd)
-  // Your code here!
-  console.log(`Results are ${results}`)
+  let results = []
+  collectBananas(results, "", s, s.length - 6)
   return results
 }
 
 function isBanana(str) {
-//   console.log(`str is ${str}`)
-//   console.log(`Evaluation of ${str.split("-").join("")}`)
   return (str.split("-").join("") == "banana")
 }
 
 function collectBananas(results, base, str, nd) {
-//  console.log(`New collect attempt: base is ${base}, str is ${str}, nd is ${nd} \n together is ${base + str}`)
-//   console.log(`New collect attempt: together is ${base + str}`)
   if (isBanana(base + str)) {
     results.push(base + str)
-//     console.log(`Success`)
   }
   if (nd > 0 && str.length > 0) {
     collectBananas(results, base + "-", str.slice(1), nd - 1)
