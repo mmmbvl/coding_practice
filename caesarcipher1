@@ -56,9 +56,9 @@ function demovingShift(arr, shift) {
 }
 
 function shiftLetter(c, shift) {
-  let alphabet = "abcdefghijklmnopqrstuvwxyz"
+  let alphabet = 'abcdefghijklmnopqrstuvwxyz'
   if (isUpperCase(c)) {
-    alphabet = alphabet.ToUpperCase()
+    alphabet = alphabet.toUpperCase()
   }
   
   let idx = alphabet.split('').findIndex(x => x == c)
@@ -67,9 +67,36 @@ function shiftLetter(c, shift) {
 }
 
 function isUpperCase(c) {
+  console.log(`${c} ----> ${c.toUpperCase() == c}`)
   return c.toUpperCase() == c
 }
 
+function splitString(str) {
+  let len = str.length
+  let distribution = [0,0,0,0,0]
+  
+  if (len % 5 == 0) {
+    distribution.fill(len / 5)
+  }
+  else if (len % 4 < parseInt(len/4)) {
+    distribution.fill(parseInt(len/4))
+    distribution[4] = len % 4
+  }
+  else {
+    for (let i = 0; i < len; i++) {
+      distribution[i % 4]++
+    }
+  }
+  
+  let soln = []
+  console.log(`${str} gives distr: ${distribution}`)
+  for (let j = 0, p = 0; j < distribution.length; j++) {
+    soln.push(str.slice(p, p + distribution[j]))
+    p += distribution[j]
+  }
+  
+  return soln
+}
 
 describe("Tests", () => {
   it("test", () => {
@@ -83,7 +110,14 @@ describe("Tests", () => {
     Test.assertSimilar(shiftLetter('z',1), 'a')
     Test.assertSimilar(shiftLetter('m',2), 'o')
     Test.assertSimilar(shiftLetter('z',28), 'b')
-    Test.assertSimilar(shiftLetter('a',1), 'b')
+    Test.assertSimilar(shiftLetter('C',2), 'E')
+    
+    Test.assertSimilar(splitString('A'), ['A', '', '', '', ''])
+    Test.assertSimilar(splitString('AAAA'), ['A', 'A', 'A', 'A', ''])
+    Test.assertSimilar(splitString('AAAAA'), ['A', 'A', 'A', 'A', 'A'])    
+    Test.assertSimilar(splitString('AAAABBBB'), ['AA', 'AA', 'BB', 'BB', ''])
+    Test.assertSimilar(splitString('AAAABBBBC'), ['AA', 'AA', 'BB', 'BB', 'C'])
+    Test.assertSimilar(splitString('AAABBBCCCDD'), ['AAA', 'BBB', 'CCC', 'DD', ''])
+    Test.assertSimilar(splitString('AAAABBBBCCCCDDDDE'), ['AAAA', 'BBBB', 'CCCC', 'DDDD', 'E'])
   });
 });
-
