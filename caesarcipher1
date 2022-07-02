@@ -45,6 +45,9 @@ Strings
 
 
 function movingShift(s, shift) {
+  
+  
+  
     return "";
 }
 
@@ -52,11 +55,35 @@ function demovingShift(arr, shift) {
     return "";
 }
 
+function shiftLetter(c, shift) {
+  let alphabet = "abcdefghijklmnopqrstuvwxyz"
+  if (isUpperCase(c)) {
+    alphabet = alphabet.ToUpperCase()
+  }
+  
+  let idx = alphabet.split('').findIndex(x => x == c)
+  idx = (idx + shift) % (alphabet.length)
+  return alphabet[idx]
+}
+
+function isUpperCase(c) {
+  return c.toUpperCase() == c
+}
+
 
 describe("Tests", () => {
   it("test", () => {
-var u = "I should have known that you would have a perfect answer for me!!!"
-var v = ["J vltasl rlhr ", "zdfog odxr ypw", " atasl rlhr p ", "gwkzzyq zntyhv", " lvz wp!!!"]
-Test.assertSimilar(movingShift(u, 1), v)
+    var u = "I should have known that you would have a perfect answer for me!!!"
+    var v = ["J vltasl rlhr ", "zdfog odxr ypw", " atasl rlhr p ", "gwkzzyq zntyhv", " lvz wp!!!"]
+//     Test.assertSimilar(movingShift(u, 1), v)
+
+    
+    Test.assertSimilar(shiftLetter('a',1), 'b')
+    Test.assertSimilar(shiftLetter('a',4), 'e')
+    Test.assertSimilar(shiftLetter('z',1), 'a')
+    Test.assertSimilar(shiftLetter('m',2), 'o')
+    Test.assertSimilar(shiftLetter('z',28), 'b')
+    Test.assertSimilar(shiftLetter('a',1), 'b')
   });
 });
+
