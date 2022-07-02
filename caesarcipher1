@@ -44,14 +44,16 @@ Cryptography
 Strings
 
 
-function movingShift(s, shift) {
-  
-  
-  
-    return "";
+ffunction movingShift(s, shift) {
+  s = s.split('').map((x, i) => shiftLetter(x,shift + i)).join('')
+  return splitString(s)
+  return "";
 }
 
 function demovingShift(arr, shift) {
+    let string = arr.join('')
+    string = string.split('').map((x, i) => shiftLetter(x,- shift - i)).join('')
+    return string
     return "";
 }
 
@@ -60,8 +62,14 @@ function shiftLetter(c, shift) {
   if (isUpperCase(c)) {
     alphabet = alphabet.toUpperCase()
   }
+  while (shift < 0) {
+    shift += 26
+  }
   
   let idx = alphabet.split('').findIndex(x => x == c)
+  if (idx == -1) {
+    return c
+  }
   idx = (idx + shift) % (alphabet.length)
   return alphabet[idx]
 }
@@ -81,6 +89,12 @@ function splitString(str) {
   else if (len % 4 < parseInt(len/4)) {
     distribution.fill(parseInt(len/4))
     distribution[4] = len % 4
+    while (distribution[4] + 4 < distribution[3]) {
+      for (let x = 0; x < 4; x++) {
+        distribution[x] = distribution[x] - 1
+        distribution[4]++
+      }
+    }
   }
   else {
     for (let i = 0; i < len; i++) {
@@ -97,7 +111,6 @@ function splitString(str) {
   
   return soln
 }
-
 describe("Tests", () => {
   it("test", () => {
     var u = "I should have known that you would have a perfect answer for me!!!"
