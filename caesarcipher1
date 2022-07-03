@@ -43,8 +43,7 @@ Ciphers
 Cryptography
 Strings
 
-
-ffunction movingShift(s, shift) {
+function movingShift(s, shift) {
   s = s.split('').map((x, i) => shiftLetter(x,shift + i)).join('')
   return splitString(s)
   return "";
@@ -75,7 +74,6 @@ function shiftLetter(c, shift) {
 }
 
 function isUpperCase(c) {
-  console.log(`${c} ----> ${c.toUpperCase() == c}`)
   return c.toUpperCase() == c
 }
 
@@ -87,13 +85,12 @@ function splitString(str) {
     distribution.fill(len / 5)
   }
   else if (len % 4 < parseInt(len/4)) {
-    distribution.fill(parseInt(len/4))
-    distribution[4] = len % 4
-    while (distribution[4] + 4 < distribution[3]) {
-      for (let x = 0; x < 4; x++) {
-        distribution[x] = distribution[x] - 1
-        distribution[4]++
-      }
+    while (len % 4 != 0 || len > 20) {
+      for(const i in distribution) {distribution[i]++}
+      len -= 5
+    }
+    for (let i = 0; i < len; i++) {
+      distribution[i % 4]++
     }
   }
   else {
@@ -103,7 +100,6 @@ function splitString(str) {
   }
   
   let soln = []
-  console.log(`${str} gives distr: ${distribution}`)
   for (let j = 0, p = 0; j < distribution.length; j++) {
     soln.push(str.slice(p, p + distribution[j]))
     p += distribution[j]
@@ -111,6 +107,8 @@ function splitString(str) {
   
   return soln
 }
+
+
 describe("Tests", () => {
   it("test", () => {
     var u = "I should have known that you would have a perfect answer for me!!!"
