@@ -22,14 +22,12 @@ Mathematics
 
 
 function zeros (n) {
-  let twos = getOcc(n, 2), fives = getOcc(n, 5)
-  return Math.min(twos, fives)
+  return Math.min(getOcc(n, 2), getOcc(n, 5))
 }
 
 function getOcc(n, mod) {
-  let acc = Math.floor(n / mod)
-  let tmp = acc
-  while (tmp > 0) {
+  let acc = Math.floor(n / mod), tmp = acc
+  while (tmp) {
     tmp = Math.floor(tmp / mod)
     acc += tmp
   }
