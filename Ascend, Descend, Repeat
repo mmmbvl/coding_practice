@@ -32,15 +32,19 @@ Algorithms
 function ascendDescend(length, minimum, maximum) {
   let ans = [minimum], asc = true
   while (ans.join('').length < length) {
-    if (asc) {ans.push(ans[ans.length - 1] + 1)}
-    if (!asc) {ans.push(ans[ans.length - 1] - 1)}
+    ans.push(ans[ans.length - 1] + (asc ? 1 : -1))
     if (ans[ans.length - 1] >= maximum) {asc = false}
     if (ans[ans.length - 1] <= minimum) {asc = true}
   }
-  if (maximum == minimum) {ans.fill(maximum)}
-  if (maximum < minimum) {ans = ['']}
+  if (maximum == minimum) {
+    ans.fill(maximum)
+  }
+  if (maximum < minimum) {
+    return ''
+  }
   return ans.join('').slice(0,length)
 }
+
 
 
 const chai = require("chai");
