@@ -13,20 +13,19 @@ Mathematics
 Puzzles
 
 function luckCheck(ticket){
-  let arr = ticket.split('')
-  for (let i = 0; i < arr.length; i++) {
-    if (isNaN(+arr[i]) || arr[i] == ' ') {
+  let arr = ticket.split(''), sum = 0
+  
+  arr.forEach((x,i) => {
+    if (isNaN(+x) || x == ' ') {
       throw 'error'
     }
     else {
-      arr[i] = +arr[i]
+      arr[i] = +x
     }
-  }
-  
-  let sum = 0
+  })
+
   for (let i = 0; i < Math.floor(arr.length / 2); i++) {
-    sum += arr[i]
-    sum -= arr[arr.length - 1 - i]
+    sum += arr[i] - arr[arr.length - 1 - i]
   }
   return sum == 0
   //your code here
