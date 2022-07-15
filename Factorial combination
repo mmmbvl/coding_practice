@@ -35,6 +35,10 @@ function going(n) {
   for (let i = 1; i <= n; i++) {
     let val = 1
     for (let j = i + 1; j <= n; j++) {
+      if (n - j > 7) {
+        val = 0
+        break;
+      }
       val /= j
     }
     sum += val
