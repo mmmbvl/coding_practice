@@ -1,0 +1,95 @@
+
+Cubic Tap Code
+
+This works similarly to Tap Code except instead of being mapped onto a 5x5 square, letters are mapped onto a 3x3x3 cube, left to right, top to bottom, front to back with space being the 27th "letter". Letters are represented by a series of taps (represented as dots .) and pauses (represented by spaces  ), for example A is represented as . . . (first column, first row, first layer) and  is represented as ... ... ... (third column, third row, third layer).
+
+For reference the three layers of the cube are as follows (underscore represents space):
+
+1  1  2  3 
+1  A  B  C
+2  D  E  F
+3  G  H  I
+
+2  1  2  3 
+1  J  K  L
+2  M  N  O
+3  P  Q  R
+
+3  1  2  3 
+1  S  T  U
+2  V  W  X
+3  Y  Z  _
+
+Your task (should you choose to accept it)
+
+Create two functions encode() and decode(), to encode and decode strings to and from cubic tap code.
+Input
+
+encode() takes a string of uppercase letters and spaces and outputs a string of dots and spaces. decode() takes a string of dots and spaces and outputs a string of uppercase letters and spaces. All inputs will be valid.
+Examples
+
+encode("N") => ".. .. .."
+encode("TEST") => ".. . ... .. .. . . . ... .. . ..."
+encode("HELLO WORLD") => ".. ... . .. .. . ... . .. ... . .. ... .. .. ... ... ... .. .. ... ... .. .. ... ... .. ... . .. . .. ."
+
+decode(".. .. ..") => "N"
+decode(".. . ... .. .. . . . ... .. . ...") => "TEST"
+decode(".. ... . .. .. . ... . .. ... . .. ... .. .. ... ... ... .. .. ... ... .. .. ... ... .. ... . .. . .. .") => "HELLO WORLD"
+
+Ciphers
+Algorithms
+Cryptography
+
+
+let cnst = [9, 3, 1] //Moving by layer, column, row (higher order to lower order)
+let set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ '
+
+function encode(str) {
+  let arr = str.split(''), res = ''
+  arr.map(x => {
+    let p = set.indexOf(x), encoding = ''
+    console.log(`Encoding letter ${x} ...`)
+    cnst.forEach((y,i) => {
+      encoding += '.'.repeat(Math.floor(p/y) + 1) + ' '
+      p = p % y
+      console.log(`For element ${i}, encoding became ${encoding}`)
+    })
+    res += encoding.split('').reverse().join('') //Reverse order to row, column, layer
+  })
+  return res.slice(1) //Extra space at beginning
+}
+
+function decode(str) {
+  let arr = str.split(' ')
+  
+  return ""
+}
+
+
+const chai = require("chai");
+const assert = chai.assert;
+
+describe("Fixed Tests", () => {
+  describe("Encoding", () => {
+    it("N" , () => {
+      assert.strictEqual(encode("N"), ".. .. ..");
+    });
+    it("TEST" , () => {
+      assert.strictEqual(encode("TEST"), ".. . ... .. .. . . . ... .. . ...");
+    });
+    it("HELLO WORLD" , () => {
+      assert.strictEqual(encode("HELLO WORLD"), ".. ... . .. .. . ... . .. ... . .. ... .. .. ... ... ... .. .. ... ... .. .. ... ... .. ... . .. . .. .");
+    });
+  });
+  describe("Decoding", () => {
+    it("N" , () => {
+      assert.strictEqual(decode(".. .. .."), "N");
+    });
+    it("TEST" , () => {
+      assert.strictEqual(decode(".. . ... .. .. . . . ... .. . ..."), "TEST");
+    });
+    it("HELLO WORLD" , () => {
+      assert.strictEqual(decode(".. ... . .. .. . ... . .. ... . .. ... .. .. ... ... ... .. .. ... ... .. .. ... ... .. ... . .. . .. ."), "HELLO WORLD");
+    });
+  });
+});
