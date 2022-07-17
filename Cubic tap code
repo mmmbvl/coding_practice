@@ -41,7 +41,7 @@ Algorithms
 Cryptography
 
 
-let cnst = [9, 3, 1] //Moving by layer, column, row (higher order to lower order)
+let cnst = [9, 3, 1] //Moving by layer, row, column (higher order to lower order)
 let set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ '
 
 function encode(str) {
@@ -54,16 +54,30 @@ function encode(str) {
       p = p % y
       console.log(`For element ${i}, encoding became ${encoding}`)
     })
-    res += encoding.split('').reverse().join('') //Reverse order to row, column, layer
+    res += encoding.split('').reverse().join('') //Reverse order to column, row, layer
   })
   return res.slice(1) //Extra space at beginning
 }
 
 function decode(str) {
-  let arr = str.split(' ')
-  
-  return ""
+  let arr = str.split(' '), res = '', buffer = [0,0,0]
+  arr.forEach((x,i) => {
+    console.log(`Accumulating ${x}`)
+    buffer[i % 3] = x.length
+    if (i % 3 == 2) {
+      console.log(`Found ${buffer}, reading character`)
+      let val = 0
+      cnst.forEach((y,j) => {
+        val += (buffer[2 - j] - 1) * y
+        console.log(`${buffer[2 - j] - 1} X ${y} MAKES ${val}`)
+      })
+      console.log(`val ${val} gives character ${set[val]}`)
+      res += set[val]
+    }
+  })
+  return res
 }
+
 
 
 const chai = require("chai");
