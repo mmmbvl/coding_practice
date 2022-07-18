@@ -96,6 +96,7 @@ If n == 0 closest("") should return []
 See Example tests for the format of the results in your language.
 Fundamentals
 Sorting
+
 function  closest(strng) {
   let nums = strng.split(' ')
   let wts = nums.map(x => x.split('').reduce((sum,digit) => sum + +digit, 0))
@@ -103,46 +104,24 @@ function  closest(strng) {
   for (let i = 0; i < wts.length; i++) {
     diffs[i] = new Array(wts.length)
   }
-  let soln = new Array(2).fill([Math])
-  
   if (strng == '') {return []}
   
   for (let col = 0; col < wts.length; col++) {
     for (let row = 0; row < wts.length; row++) {
       diffs[col][row] = Math.abs(wts[col] - wts[row])
     }
-    console.log(`col ${col}, @ ${wts[col]}   --> ${diffs[col]}`)
   }
   
   let smallest = [2 * Math.max(...wts), Math.max(...wts), 0, 0] //weights, difference of weights, col, row
-  
-  let minDiff = [Math.max(...wts),0,0]
   for (let col = wts.length - 1; col >= 0; col--) {
-    for (let row = wts.length - 1; row >= 0; row--) {
-      if (diffs[col][row] < minDiff[0] && row !== col) {minDiff = [diffs[col][row],col,row]}
-    }
-  }
-  console.log(`minDiff is ${minDiff}`)
-  
-  for (let col = wts.length - 1; col >= 0; col--) {
-//     console.log(`New col ${col}`)
-    for (let row = wts.length - 1; row >= 0; row--) {
-      if (row === col) {continue}
-//       console.log(row, diffs[col][row])
-        if (diffs[col][row] < smallest[1]) {
-//           console.log(`Found smaller difference @ ${col} ${row} with diff ${diffs[col][row]}`)
-          smallest = [wts[col] + wts[row], diffs[col][row], col, row]
-        }
-        else if (diffs[col][row] == smallest[1]) {
-          if (wts[col] + wts[row] < smallest[0]) {
-            smallest = [wts[col] + wts[row], diffs[col][row], col, row]
-          }
-          else if (wts[col] + wts[row] == smallest[0]) {
-            smallest = [wts[col] + wts[row], diffs[col][row], col, row]
-          }
-        }
+    for (let row = wts.length - 1; row >= 0 && row !== col; row--) {
+      if (diffs[col][row] < smallest[1] ||
+         (diffs[col][row] == smallest[1] && wts[col] + wts[row] <= smallest[0])
+         ) {
+        smallest = [wts[col] + wts[row], diffs[col][row], col, row]
       }
     }
+  }
   let col = smallest[2]
   let row = smallest[3]
   return [
