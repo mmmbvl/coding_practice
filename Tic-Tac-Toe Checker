@@ -22,36 +22,32 @@ Algorithms
 
 function isSolved(board) {
   let empty = 0
-  console.log(board)
+  
+  let diag1 = [], diag2 = []
   for (let i = 0; i < 3; i++) {
-    let row = []
-    let col = []
-    let diag1 = []
-    let diag2 = []
+    diag1.push(board[i][i])
+    diag2.push(board[2 - i][2 - i])
+  }
+  if (match(diag1, [1,1,1]) || match(diag2, [1,1,1])) {return 1}
+  if (match(diag1, [2,2,2]) || match(diag2, [2,2,2])) {return 2}
+  
+  for (let i = 0; i < 3; i++) {
+    let row = [], col = []
     for (let j = 0; j < 3; j++) {
       row.push(board[i][j])
       col.push(board[j][i])
-      diag1.push(board[j][j])
-      diag2.push(board[2 - j][2 - j])
       if (board[i][j] == 0) {empty++}
     }
-    console.log(row,col,diag1,diag2)
-    if (match111(row) || match111(col) || match111(diag1) || match111(diag2)) {return 1}
-    if (match222(row) || match222(col) || match222(diag1) || match222(diag2)) {return 2}
+    if (match(row, [1,1,1]) || match(col, [1,1,1])) {return 1}
+    if (match(row, [2,2,2]) || match(col, [2,2,2])) {return 2}
   }
   return empty == 0 ? 0 : -1
   // TODO: Check if the board is solved!
 }
 
-function match111(arr1) {
+function match(arr1, arr2) {
   for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] != 1) {return false}
-  }
-  return true
-}
-function match222(arr1) {
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] != 2) {return false}
+    if (arr1[i] != arr2[i]) {return false}
   }
   return true
 }
