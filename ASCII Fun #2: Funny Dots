@@ -1,0 +1,59 @@
+
+Funny Dots
+
+You will get two integers n (width) and m (height) and your task is to draw the following pattern. Each line is seperated with a newline (\n)
+
+Both integers are equal or greater than 1; no need to check for invalid parameters.
+Examples
+
+
+                                            +---+---+---+
+             +---+                          | o | o | o |
+dot(1, 1) => | o |            dot(3, 2) =>  +---+---+---+            
+             +---+                          | o | o | o |
+                                            +---+---+---+
+
+Serie: ASCII Fun
+
+    ASCII Fun #1: X-Shape
+    ASCII Fun #2: Funny Dots
+    ASCII Fun #3: Puzzle Tiles
+    ASCII Fun #4: Build a pyramid
+
+ASCII Art
+
+
+function dot(n,m){
+  let spacer = '', row = '', ans = ''
+  for (let i = 0; i < n; i++) {
+    if (!spacer) {
+      spacer += '+---+'
+      row += '| o |'
+    }
+    else {
+      spacer += '---+'
+      row += ' o |'
+    }
+  }
+  for (let i = 0; i < m; i++) {
+    if (!ans) {
+      ans += spacer
+    }
+    ans += '\n' + row + '\n' + spacer
+  }
+  return ans
+  //happy coding ^.^
+}
+
+describe("Default test cases", function(){
+  it("Should work for test cases", function(){
+    Test.assertEquals(dot(1,1), "+---+\n| o |\n+---+", "Should look like this: " + print(1,1));
+    Test.assertEquals(dot(3,2), "+---+---+---+\n| o | o | o |\n+---+---+---+\n| o | o | o |\n+---+---+---+", "Should look like this: " + print(3,2));
+  })
+});
+
+function print(n, m){
+  console.log('<p style="color: red;">For width: ' + n + " and height: " + m + "</p>");
+  console.log("Your solution: ");
+  console.log(dot(n,m));
+}
