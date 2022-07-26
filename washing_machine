@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 My washing machine uses 
+\f1\fs26 water
+\f0\fs24  amount of water to wash 
+\f1\fs26 load
+\f0\fs24  (in JavaScript and Python) or 
+\f1\fs26 max_load
+\f0\fs24  (in Ruby) amount of clothes. You are given a 
+\f1\fs26 clothes
+\f0\fs24  amount of clothes to wash. For each single item of clothes above the load, the washing machine will use 10% more water (multiplicative) to clean.\
+For example, if the load is 
+\f1\fs26 10
+\f0\fs24 , the amount of water it requires is 
+\f1\fs26 5
+\f0\fs24  and the amount of clothes to wash is 
+\f1\fs26 14
+\f0\fs24 , then you need 
+\f1\fs26 5 * 1.1 ^ (14 - 10)
+\f0\fs24  amount of water.\
+Write a function 
+\f1\fs26 howMuchWater
+\f0\fs24  (JS)/
+\f1\fs26 how_much_water
+\f0\fs24  (Python and Ruby) to work out how much water is needed if you have a 
+\f1\fs26 clothes
+\f0\fs24  amount of clothes. The function will accept 3 arguments: - 
+\f1\fs26 water
+\f0\fs24 , 
+\f1\fs26 load
+\f0\fs24  (or 
+\f1\fs26 max_load
+\f0\fs24 in Ruby) and 
+\f1\fs26 clothes
+\f0\fs24 .\
+My washing machine is an old model that can only handle double the amount of 
+\f1\fs26 load
+\f0\fs24  (or 
+\f1\fs26 max_load
+\f0\fs24 ). If the amount of 
+\f1\fs26 clothes
+\f0\fs24  is more than 2 times the standard amount of 
+\f1\fs26 load
+\f0\fs24  (
+\f1\fs26 max_load
+\f0\fs24 ), return 
+\f1\fs26 'Too much clothes'
+\f0\fs24 . The washing machine also cannot handle any amount of clothes less than 
+\f1\fs26 load
+\f0\fs24  (
+\f1\fs26 max_load
+\f0\fs24 ). If that is the case, return 
+\f1\fs26 'Not enough clothes'
+\f0\fs24 .\
+The answer should be rounded to the nearest 2 decimal places.\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+Mathematics\
+Fundamentals\
+\
+\
+function howMuchWater(water, load, clothes)\{\
+  return  clothes > load * 2  ? 'Too much clothes' :\
+          clothes < load      ? 'Not enough clothes' :\
+          Math.round(100 * water * (1.1 ** (clothes - load)),2) / 100\
+  // Insert your brilliant code here\
+\}\
+\
+\
+describe('Static tests', function()\{\
+  it('Should work for static tests', function()\{\
+    Test.assertEquals(howMuchWater(10,10,21), 'Too much clothes','');\
+    Test.assertEquals(howMuchWater(10,10,2), 'Not enough clothes','');\
+    Test.assertEquals(howMuchWater(10,11,20), 23.58,'');\
+    Test.assertEquals(howMuchWater(50,15,29), 189.87,'');\
+  \});\
+\})}
