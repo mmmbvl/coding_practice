@@ -21,30 +21,23 @@ Recursion
 
 
 var countChange = function(money, coins) {
-  let ways = new Set(), combo = []
-  getChange(money, coins, ways, combo)
-  let g = new Array(...ways)
-//   console.log(`g: ${g}`)
-  return g.length
-  // your implementation here
+  return getChange(money, coins, 0)
 }
 
-function getChange(mny, cns, wys, cmb) {
-//   console.log(`getChange for money = ${mny}, combo = ${cmb}`)
-  let combo = cmb.concat()
-  combo.sort()
-  if (mny == 0) {
-//     console.log(`*.*.*.* ${combo}`)
-    wys.add(combo.join('$'))
-    return
+function getChange(mny, cns, pt) {
+  if (mny <= 0) {
+    return 0
   }
-  for (let i = 0; i < cns.length; i++) {
-    if (mny >= cns[i]) {
-//       console.log(`Adding ${cns[i]} to combo: ${combo}`)
-      getChange(mny - cns[i], cns, wys, combo.concat(cns[i]))
+  let ans = 0
+  for (let i = pt; i < cns.length; i++) {
+    if (mny > cns[i]) {
+     ans += getChange(mny - cns[i], cns, i)
+      }
+    else if (mny == cns[i]) {
+      ans++
     }
-//     console.log(`Jumping back to next change  money = ${mny}, combo = ${cmb}, cns is at ${cns[i]} in ${cns}`)
   }
+  return ans
 }
 
 describe("Tests", () => {
